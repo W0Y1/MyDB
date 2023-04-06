@@ -29,12 +29,12 @@ SeriesFile::~SeriesFile() {
 }
 
 void SeriesFile::GetSeriesKey(vector<SeriesKey>& serieskeys, vector<SeriesId> seriesids) {
-	//thread t1(bind(&SeriesFile::CreateThreadToSearch, this, ref(serieskeys), seriesids, 0, seriesids.size() / 2));
-	//thread t2(bind(&SeriesFile::CreateThreadToSearch, this, ref(serieskeys), seriesids, seriesids.size() / 2, seriesids.size()));
-	//t1.join();
-	//t2.join();
-	int num = (seriesids[0]) % SERIES_PARTITION_NUM;
-	partitions[num].SearchSeriesKey(serieskeys, seriesids[0]);
+	thread t1(bind(&SeriesFile::CreateThreadToSearch, this, ref(serieskeys), seriesids, 0, seriesids.size() / 2));
+	thread t2(bind(&SeriesFile::CreateThreadToSearch, this, ref(serieskeys), seriesids, seriesids.size() / 2, seriesids.size()));
+	t1.join();
+	t2.join();
+	//int num = (seriesids[0]) % SERIES_PARTITION_NUM;
+	//partitions[num].SearchSeriesKey(serieskeys, seriesids[0]);
 }
 
 SeriesId SeriesFile::IfExist(SeriesKey& serieskey) {
