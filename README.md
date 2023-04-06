@@ -1,6 +1,6 @@
 # MyDB
-写的是一个时序型数据库，整体结构是仿照InfluxDB写的。
-结构大致和下图相符，但是省去了wal部分和retention policy部分，也就是database下的直接是shard。
+写的是一个时序型数据库，整体架构是仿照InfluxDB写的。
+架构大致和下图相符，但是省去了wal部分和retention policy部分，也就是database下的直接是shard。
 ![image](https://user-images.githubusercontent.com/80105705/230056340-8bbbd873-24b4-4897-b59e-c4fd3bf6196a.png)
 
 
