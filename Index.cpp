@@ -53,16 +53,16 @@ vector<SeriesKey> Index::SearchSeriesKey(string name, string tag_key, string tag
 	bufferpool_->FetchSeriesKey(name, tag_key, tag_value, result);
 
 	vector<SeriesId> seriesids;
-	//seriesids.reserve(4096);
-	//thread t1(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, 0, tsi_num_ / 4, ref(seriesids)));
-	//thread t2(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, tsi_num_ / 4, tsi_num_ / 2, ref(seriesids)));
-	//thread t3(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, tsi_num_ / 2, (tsi_num_ / 4) * 3, ref(seriesids)));
-	//thread t4(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, (tsi_num_ / 4) * 3, tsi_num_, ref(seriesids)));
-	//t1.join();
-	//t2.join();
-	//t3.join();
-	//t4.join();
-	seriesids= tsi_[0].FindSeriesId(name, tag_key, tag_value);
+	seriesids.reserve(4096);
+	thread t1(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, 0, tsi_num_ / 4, ref(seriesids)));
+	thread t2(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, tsi_num_ / 4, tsi_num_ / 2, ref(seriesids)));
+	thread t3(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, tsi_num_ / 2, (tsi_num_ / 4) * 3, ref(seriesids)));
+	thread t4(bind(&Index::CreateThreadToSearch, this, name, tag_key, tag_value, (tsi_num_ / 4) * 3, tsi_num_, ref(seriesids)));
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
+	//seriesids= tsi_[0].FindSeriesId(name, tag_key, tag_value);
 	sfile_->GetSeriesKey(result, seriesids);
 	return result;
 }
